@@ -41,11 +41,6 @@ const HomeScreen = props => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.rightButton}
-            onPress={() => props.navigation.navigate('Search')}>
-            <Icon name="search-outline" color="#282828" size={26} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.rightButton}
             onPress={() => setProfileModal(true)}>
             <Image
               source={{

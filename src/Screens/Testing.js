@@ -11,6 +11,7 @@ import {
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import email from 'react-native-email';
 
 const informationContent1 = () => (
   <View style={styles.informationContent1}>
@@ -39,61 +40,6 @@ const informationContent1 = () => (
   </View>
 );
 
-const contactUsForm = () => (
-  <View style={styles.contactUsSection}>
-    <Image
-      source={require('../../assets/wall_wripple.png')}
-      style={styles.wallWripple}
-    />
-    <Text style={styles.txtContactUsTitle}>Contact Us Form</Text>
-    <View>
-      <TextInput
-        placeholder="First"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="Last"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="Email Address"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="Phone"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="Address"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="State / Province / Region"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="How did hear about us?"
-        style={styles.textInputContactUs}
-        placeholderTextColor="#757575"
-      />
-      <TextInput
-        placeholder="Message"
-        style={styles.textInputContactUsMessage}
-        placeholderTextColor="#757575"
-      />
-    </View>
-    <TouchableOpacity style={styles.contactUsSubmitButton}>
-      <Text style={styles.txtSubmit}>Submit</Text>
-    </TouchableOpacity>
-  </View>
-);
-
 const _renderFirstCarousel = ({index, item}) => (
   <View>
     <View style={styles.renderFirstCarousel}>
@@ -114,6 +60,14 @@ const TestingScreen = props => {
   const [playing, setPlaying] = useState(false);
   const [activeIndexCar1, setActiveIndexCar1] = useState(0);
   const [activeIndexCar2, setActiveIndexCar2] = useState(0);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [emailAddress, setEmailAdress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [province, setProvince] = useState('');
+  const [hear, setHear] = useState('');
+  const [message, setMessage] = useState('');
   const carouselRef = useRef(null);
   const carouselWorkRef = useRef(null);
   const listData = [
@@ -164,6 +118,84 @@ const TestingScreen = props => {
       console.log('video has finished playing!');
     }
   }, []);
+
+  const handleEmail = () => {
+    const mainMessage = `Name : ${firstName} ${lastName} \n Email: ${emailAddress} \n Phone: ${phone} \n Address: ${address} \n Province: ${province} \n How did hear about us : ${hear} \n Message: ${message}`;
+    const to = ['giles73@gmail.com']; // string or array of email addresses
+    email(to, {
+      // Optional additional arguments
+      // cc: ['bazzy@moo.com', 'doooo@daaa.com'], // string or array of email addresses
+      // bcc: 'mee@mee.com', // string or array of email addresses
+      // subject: 'Show how to use',
+      body: mainMessage,
+      // checkCanOpen: false, // Call Linking.canOpenURL prior to Linking.openURL
+    }).catch('error open email ', console.error);
+  };
+
+  const contactUsForm = () => (
+    <View style={styles.contactUsSection}>
+      <Image
+        source={require('../../assets/wall_wripple.png')}
+        style={styles.wallWripple}
+      />
+      <Text style={styles.txtContactUsTitle}>Contact Us Form</Text>
+      <View>
+        <TextInput
+          placeholder="First"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setFirstName(val)}
+        />
+        <TextInput
+          placeholder="Last"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setLastName(val)}
+        />
+        <TextInput
+          placeholder="Email Address"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setEmailAdress(val)}
+        />
+        <TextInput
+          placeholder="Phone"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setPhone(val)}
+        />
+        <TextInput
+          placeholder="Address"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setAddress(val)}
+        />
+        <TextInput
+          placeholder="State / Province / Region"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setProvince(val)}
+        />
+        <TextInput
+          placeholder="How did hear about us?"
+          style={styles.textInputContactUs}
+          placeholderTextColor="#757575"
+          onChangeText={val => setHear(val)}
+        />
+        <TextInput
+          placeholder="Message"
+          style={styles.textInputContactUsMessage}
+          placeholderTextColor="#757575"
+          onChangeText={val => setMessage(val)}
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.contactUsSubmitButton}
+        onPress={() => handleEmail()}>
+        <Text style={styles.txtSubmit}>Submit</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <ScrollView style={styles.container}>

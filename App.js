@@ -540,6 +540,9 @@ const App = props => {
 const styles = StyleSheet.create({
   logo: {
     width: 90,
+    height: 40,
+    alignSelf: 'flex-start',
+    marginLeft: -30,
   },
   channelName: {
     fontFamily: 'Roboto-Medium',
