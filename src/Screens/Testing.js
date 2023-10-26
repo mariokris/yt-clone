@@ -207,6 +207,7 @@ const TestingScreen = props => {
           <Image
             source={require('../../assets/testing_image.png')}
             style={styles.profile}
+            resizeMode="center"
           />
         </View>
         <View style={styles.containerDescription}>

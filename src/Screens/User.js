@@ -1,400 +1,288 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
-import UserData from '../Utils/User.json';
-import {Description} from '../Screens/Channel';
-import {numberSeperator} from '../Utils/Util';
-import {LineChart, BarChart} from 'react-native-chart-kit';
-import {AllTimes, MonthLabels, WeekLabels} from '../Utils/Labes';
-import {widthPercentageToDP} from '../Utils/DpToPixel';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {BottomModal, Button} from '../Modules';
-import {displayName} from '../../app.json';
+import React from 'react';
+import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 
-const data = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43],
-    },
-  ],
-};
-
-const UserScreen = props => {
-  const [viewData, setViewData] = useState('week');
-  const [uploadModal, setUploadModal] = useState(false);
-  const [noContent] = useState(false);
-  const [loggedUser] = useState(true);
-
-  const chartConfig = {
-    decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => '#04abf2',
-    strokeWidth: 1,
-    barPercentage: 0.5,
-    fillShadowGradient: '#04abf2',
-    fillShadowGradientOpacity: 1,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    height: 5000,
-    style: {
-      borderRadius: 16,
-    },
-    propsForBackgroundLines: {
-      strokeWidth: 1,
-      stroke: '#04abf2',
-      strokeDasharray: '0',
-    },
-  };
-
-  const getWidth = widthData => {
-    let width = 96;
-    return widthData.length >= 25 ? width + 4 + widthData.length : width;
-  };
-
-  if (!loggedUser) {
-    return (
-      <View style={styles.loginContainer}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <Text style={styles.loginHeading}>Join the family</Text>
-        <Text style={styles.description}>
-          Create your {displayName} Account or Login to share your videos with
-          the community
-        </Text>
-        <Button
-          title="Register or Login"
-          styleProps={styles.loginButton}
-          textStyle={styles.loginText}
-        />
-      </View>
-    );
-  }
-
+const Article2 = props => {
   return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <Image source={{uri: UserData?.avtar}} style={styles.avtar} />
-        <Text style={styles.name}>{UserData?.name}</Text>
-        <Button
-          title="Edit"
-          onPress={() =>
-            props.navigation.navigate('EditProfile', {
-              channelName: UserData?.name,
-            })
-          }
+    <ScrollView style={styles.container}>
+      <View style={styles.contentContainer}>
+        <Image
+          source={require('../../assets/ice_pic.png')}
+          style={styles.wallWripple}
+          resizeMode="center"
         />
-        <View style={styles.channelDescription}>
-          <Description
-            head={numberSeperator(UserData?.totalFollowers)}
-            title="Followers"
-          />
-          <Text style={styles.divider}>|</Text>
-          <Description
-            head={`$ ${UserData?.totalEarning}`}
-            title="Total Earnings"
-          />
-          <Text style={styles.divider}>|</Text>
-          <Description
-            head={numberSeperator(UserData?.totalViews)}
-            title="Views"
-          />
-        </View>
-        {noContent ? (
-          <View style={styles.noContent}>
-            <Image
-              source={require('../../assets/noContent.png')}
-              style={styles.vector}
-              resizeMode="contain"
-            />
-            <View style={styles.noContentDetail}>
-              <Text style={styles.noContentHeading}>No Content available</Text>
-              <Button title="Upload Video" />
-            </View>
-          </View>
-        ) : (
-          <View>
-            <Text style={styles.heading}>Analytics</Text>
-            <View style={styles.division}>
-              <Text
-                style={
-                  viewData === 'allTime' ? styles.selectedOption : styles.option
-                }
-                onPress={() => setViewData('allTime')}>
-                All Times
-              </Text>
-              <Text
-                style={
-                  viewData === 'month' ? styles.selectedOption : styles.option
-                }
-                onPress={() => setViewData('month')}>
-                This Month
-              </Text>
-              <Text
-                style={
-                  viewData === 'week' ? styles.selectedOption : styles.option
-                }
-                onPress={() => setViewData('week')}>
-                This Week
-              </Text>
-            </View>
-            <ScrollView
-              horizontal={true}
-              contentOffset={
-                getWidth(
-                  viewData === 'month'
-                    ? MonthLabels
-                    : viewData === 'week'
-                    ? WeekLabels
-                    : AllTimes,
-                ) < 90
-                  ? {x: 10000, y: 0}
-                  : {x: 0, y: 0}
-              }
-              showsHorizontalScrollIndicator={false}>
-              <LineChart
-                data={{
-                  labels:
-                    viewData === 'month'
-                      ? MonthLabels
-                      : viewData === 'week'
-                      ? WeekLabels
-                      : AllTimes,
-                  datasets: [
-                    {
-                      data:
-                        viewData === 'month'
-                          ? UserData?.thisMonthsViews
-                          : viewData === 'week'
-                          ? UserData?.thisWeeksViews
-                          : UserData?.allTime,
-                    },
-                  ],
-                }}
-                width={widthPercentageToDP(
-                  getWidth(
-                    viewData === 'month'
-                      ? MonthLabels
-                      : viewData === 'week'
-                      ? WeekLabels
-                      : AllTimes,
-                  ).toString(),
-                )}
-                height={240}
-                yAxisInterval={1}
-                chartConfig={{
-                  backgroundColor: '#e26a00',
-                  backgroundGradientFrom: '#fb8c00',
-                  backgroundGradientTo: '#ffa726',
-                  decimalPlaces: 0, // optional, defaults to 2dp
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                  labelColor: (opacity = 1) =>
-                    `rgba(255, 255, 255, ${opacity})`,
-                  style: {
-                    borderRadius: 16,
-                  },
-                  propsForDots: {
-                    r: '6',
-                    strokeWidth: '2',
-                    stroke: '#ffa726',
-                  },
-                }}
-                x
-                bezier
-                style={styles.chart}
-                verticalLabelRotation={340}
-              />
-            </ScrollView>
-            <Text style={styles.heading}>Earning</Text>
-            <BarChart
-              style={styles.chart}
-              data={data}
-              width={widthPercentageToDP('96%')}
-              height={230}
-              yAxisLabel="$"
-              chartConfig={chartConfig}
-              withInnerLines={false}
-            />
-            <TouchableOpacity
-              style={styles.floatingButton}
-              onPress={() => setUploadModal(true)}>
-              <Icon name="add-outline" color="#fff" size={28} />
-            </TouchableOpacity>
-          </View>
-        )}
-      </ScrollView>
-      <View style={styles.margin} />
-      <BottomModal
-        isVisible={uploadModal}
-        dismiss={() => setUploadModal(false)}>
-        <View>
-          <Pressable style={styles.modalOption}>
-            <View style={styles.iconStyle}>
-              <Icon name="cloud-upload-outline" color="#212121" size={28} />
-            </View>
-            <Text style={styles.option}>Upload a video</Text>
-          </Pressable>
-          <Pressable style={styles.modalOption}>
-            <View style={styles.iconStyle}>
-              <Icon name="radio-outline" color="#212121" size={28} />
-            </View>
-            <Text style={styles.option}>Go live</Text>
-          </Pressable>
-        </View>
-      </BottomModal>
-    </View>
+        <Text style={styles.growingContent}>
+          {
+            "Corporate agriculture is maximizing profits at the expense of our health. Monsanto’s herbicide glyphosate is a highly toxic poison. It has caused cancer for millions of Americans. \n\n Peer-reviewed studies link this poison to many other diseases including autism, Alzheimer’s, dementia, Celiac’s, gluten intolerance, diabetes, obesity, autoimmune diseases, and cancers. Many of these disease incidence rates have increased tenfold in the past 25 years with a 99% correlation with the increased use of glyphosate. \n\n The FDA has trouble finding any food that does not have glyphosate. Even low concentrations are toxic. We are far from the responsible guidelines the relevant precautionary principle suggests. \n\n Monsanto’s poison disproportionately affects the poor and children, because it is highly concentrated in processed foods and children’s kidneys aren’t fully developed for filtering toxins. What's more important than the health of us and our loved ones? The stakes could hardly be higher. Let's do better."
+          }
+        </Text>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
   },
   contentContainer: {
-    flexGrow: 1,
-  },
-  avtar: {
-    height: 90,
-    width: 90,
-    borderRadius: 90 / 2,
-    alignSelf: 'center',
-    marginVertical: 10,
-  },
-  name: {
-    fontFamily: 'Roboto-Black',
-    fontSize: 20,
-    color: '#212121',
-    textAlign: 'center',
-    letterSpacing: 0.28,
-  },
-  channelDescription: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginVertical: 4,
-  },
-  divider: {
-    fontFamily: 'Roboto-Light',
-    fontSize: 33,
-    color: '#929292',
-    marginHorizontal: 5,
-  },
-  division: {
-    flexDirection: 'row',
-  },
-  option: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 14,
-    marginHorizontal: 10,
-    padding: 8,
-    color: '#212121',
-  },
-  selectedOption: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 14,
-    backgroundColor: '#ecf3fd',
-    color: '#04abf2',
-    padding: 8,
-    borderRadius: 7,
-    marginHorizontal: 10,
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   heading: {
+    fontFamily: 'Outfit-SemiBold',
+    fontSize: 25,
+    color: '#212121',
+    marginHorizontal: 15,
+    // marginTop: 50,
+  },
+  content: {
+    color: '#2c2c2c',
     fontFamily: 'Roboto-Medium',
-    fontSize: 17,
-    padding: 11,
-    backgroundColor: '#212121',
-    color: '#fff',
-    marginVertical: 6,
+    fontSize: 14,
   },
-  floatingButton: {
-    backgroundColor: '#04abf2',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    position: 'absolute',
-    marginHorizontal: 10,
-    alignItems: 'center',
-    bottom: 57,
-    right: 10,
-    justifyContent: 'center',
+  space: {
+    height: 25,
   },
-  margin: {
-    height: 48,
+  containerDescription: {
+    marginBottom: 15,
+    marginTop: 25,
+    marginHorizontal: 15,
   },
-  iconStyle: {
-    width: 45,
-    height: 45,
-    borderRadius: 45 / 2,
-    backgroundColor: '#f2f2f2',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalOption: {
+  socialContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    marginVertical: 5,
   },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
-    paddingRight: 53,
-    marginHorizontal: 7,
+  link: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+    marginLeft: 14,
   },
-  loginContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+  profile: {
+    marginTop: 30,
+    width: '100%',
+    height: 200,
+    // marginHorizontal: 15,
   },
-  logo: {
-    width: 200,
-  },
-  loginHeading: {
+  titleDescription: {
     fontFamily: 'Roboto-Black',
-    color: '#181818',
-    fontSize: 29,
+    fontSize: 17,
+    marginTop: 15,
+    marginBottom: 5,
+  },
+  subTitleDescription: {
+    fontFamily: 'Outfit-SemiBold',
+    color: '#92C255',
+    fontSize: 15,
+    marginTop: 10,
   },
   description: {
-    fontFamily: 'Roboto-Medium',
-    color: '#929292',
-    fontSize: 18,
+    fontFamily: 'Outfit-Regular',
+    color: '#595959',
+    fontSize: 15,
+    fontWeight: '300',
+  },
+  backgroundVideo: {
+    marginTop: 20,
+    height: 200,
+    width: 320,
+    flex: 1,
+    // top: 0,
+    backgroundColor: '#000',
+  },
+  youtubePlayer: {
+    marginTop: 10,
+    marginHorizontal: 15,
+  },
+  youtubeOpacity: {
+    opacity: 0.99,
+  },
+  informationContent1: {marginBottom: 60, marginTop: 30, marginHorizontal: 20},
+  growingTitle: {
+    fontFamily: 'Outfit-SemiBold',
+    color: '#5E8887',
+    fontSize: 21,
     textAlign: 'center',
   },
-  loginButton: {
-    backgroundColor: '#00C6FF',
-    borderWidth: 0,
-    borderRadius: 30,
-  },
-  loginText: {
-    color: '#fff',
-  },
-  noContent: {
-    alignItems: 'center',
-  },
-  noContentHeading: {
-    color: '#606060',
-    fontFamily: 'Roboto-Medium',
+  growingContent: {
+    marginTop: 20,
+    fontFamily: 'Outfit-Regular',
+    color: '#595959',
     fontSize: 17,
+    fontWeight: '300',
+    textAlign: 'left',
+    marginBottom: 100,
   },
-  vector: {
-    width: widthPercentageToDP('90'),
+  thirdContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 20,
+    marginTop: 10,
   },
-  noContentDetail: {
-    top: -40,
+  thirdContainerChild: {justifyContent: 'center', alignItems: 'center'},
+  numberTitle: {
+    fontFamily: 'Outfit-SemiBold',
+    color: '#5E8887',
+    fontSize: 40,
+  },
+  stateTitle: {
+    fontFamily: 'Outfit-SemiBold',
+    color: '#92C255',
+    fontSize: 15,
+  },
+  mt10: {
+    marginTop: 10,
+  },
+  contactUsSection: {
+    marginBottom: 50,
+    // marginTop: 20,
+    // marginHorizontal: 5,
+    backgroundColor: '#5E8886',
     width: '100%',
+    paddingBottom: 20,
+  },
+  wallWripple: {
+    width: '100%',
+    height: 250,
+  },
+  txtContactUsTitle: {
+    textAlign: 'center',
+    fontFamily: 'Outfit-SemiBold',
+    color: 'white',
+    fontSize: 21,
+  },
+  textInputContactUs: {
+    fontFamily: 'Outfit-Regular',
+    fontSize: 15,
+    color: '#000000',
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+    marginTop: 15,
+  },
+  textInputContactUsMessage: {
+    fontFamily: 'Outfit-Regular',
+    fontSize: 15,
+    color: '#000000',
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+    marginTop: 15,
+    height: 100,
+  },
+  contactUsSubmitButton: {
+    width: 100,
+    height: 50,
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 2,
+    justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 15,
+    alignSelf: 'center',
+  },
+  txtSubmit: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'Outfit-Regular',
+  },
+  peopleSaidImage: {
+    width: 250,
+    height: 250,
+    resizeMode: 'contain',
+  },
+  workImage: {
+    width: 280,
+    height: 280,
+    resizeMode: 'contain',
+  },
+  renderFirstCarousel: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    height: 240,
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  renderSecondCarousel: {
+    borderRadius: 5,
+    height: 280,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  sliderContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  previousCarousel: {
+    width: '15%',
+    alignItems: 'flex-end',
+  },
+  mainCarousel: {
+    width: '70%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+    // alignSelf: 'center',
+  },
+  mainWorkCarousel: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+    // backgroundColor: 'red',
+    // alignSelf: 'center',
+  },
+  nextCarousel: {
+    width: '15%',
+    alignItems: 'flex-start',
+  },
+  reviewContainer: {
+    flexDirection: 'column',
+    marginTop: 10,
+    alignSelf: 'center',
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  outfitRegular: {
+    fontFamily: 'Outfit-Regular',
+  },
+  outfitRegularCenter: {
+    fontFamily: 'Outfit-Regular',
+    textAlign: 'center',
+  },
+  growingContent2: {
+    marginTop: 10,
+    fontFamily: 'Outfit-Regular',
+    color: '#595959',
+    fontSize: 17,
+    fontWeight: '300',
+    textAlign: 'center',
+    marginHorizontal: 15,
+  },
+  paginationContainer: {
+    width: 50,
+    height: 10,
+  },
+  dotStyle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 1,
+    backgroundColor: '#404040',
+    alignSelf: 'flex-start',
+    marginBottom: 20,
+  },
+  workContainer: {
+    alignItems: 'center',
+    marginHorizontal: 15,
+    marginBottom: 30,
   },
 });
 
-export default UserScreen;
+export default Article2;

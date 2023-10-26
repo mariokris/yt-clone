@@ -61,7 +61,7 @@ const MainTabs = () => {
       backBehavior="history">
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={TestingScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: tabInfo => (
@@ -103,17 +103,17 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="User"
-        component={UserChannel}
+        component={UserScreen}
         options={{
-          tabBarLabel: 'User',
+          tabBarLabel: 'Article',
           tabBarIcon: tabInfo => (
-            <Image source={{uri: UserData?.avtar}} style={styles.tabAvtar} />
+            <Icon name={'flask'} size={25} color="#282828" />
           ),
         }}
       />
       <Tab.Screen
         name="Testing"
-        component={TestingScreen}
+        component={HomeScreen}
         options={{
           tabBarLabel: 'Info',
           tabBarIcon: tabInfo => (

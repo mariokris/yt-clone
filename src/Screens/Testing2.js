@@ -132,155 +132,27 @@ const TestingScreen = props => {
     }).catch('error open email ', console.error);
   };
 
-  const contactUsForm = () => (
-    <View style={styles.contactUsSection}>
-      <Image
-        source={require('../../assets/wall_wripple.png')}
-        style={styles.wallWripple}
-      />
-      <Text style={styles.txtContactUsTitle}>Contact Us Form</Text>
-      <View>
-        <TextInput
-          placeholder="First"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setFirstName(val)}
-        />
-        <TextInput
-          placeholder="Last"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setLastName(val)}
-        />
-        <TextInput
-          placeholder="Email Address"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setEmailAdress(val)}
-        />
-        <TextInput
-          placeholder="Phone"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setPhone(val)}
-        />
-        <TextInput
-          placeholder="Address"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setAddress(val)}
-        />
-        <TextInput
-          placeholder="State / Province / Region"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setProvince(val)}
-        />
-        <TextInput
-          placeholder="How did hear about us?"
-          style={styles.textInputContactUs}
-          placeholderTextColor="#757575"
-          onChangeText={val => setHear(val)}
-        />
-        <TextInput
-          placeholder="Message"
-          style={styles.textInputContactUsMessage}
-          placeholderTextColor="#757575"
-          onChangeText={val => setMessage(val)}
-        />
-      </View>
-      <TouchableOpacity
-        style={styles.contactUsSubmitButton}
-        onPress={() => handleEmail()}>
-        <Text style={styles.txtSubmit}>Submit</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
-        <View style={styles.youtubePlayer}>
-          <Text style={styles.videoTitle}>
-            Chad Johnson Food Forest Walkthrough with Jim Gale of FFA
-          </Text>
-          <YoutubePlayer
-            height={220}
-            play={playing}
-            videoId={'pshyJI0u7eE'}
-            onChangeState={onStateChange}
-            webViewStyle={styles.youtubeOpacity}
-          />
-        </View>
-        <View style={styles.youtubePlayer}>
-          <Text style={styles.videoTitle}>
-            CREATING ABUNDANCE IN YOUR BACKYARD - Jim Gale on The Highwire
-          </Text>
-          <YoutubePlayer
-            height={220}
-            play={playing}
-            videoId={'DJEihCcRH0c'}
-            onChangeState={onStateChange}
-            webViewStyle={styles.youtubeOpacity}
-          />
-        </View>
-        <View style={styles.youtubePlayer}>
-          <Text style={styles.videoTitle}>
-            Jim Gale - Food Forest Abundance | Food Forests Everywhere!
-          </Text>
-          <YoutubePlayer
-            height={220}
-            play={playing}
-            videoId={'eIb8p5eWZl8'}
-            onChangeState={onStateChange}
-            webViewStyle={styles.youtubeOpacity}
-          />
-        </View>
-        <View style={styles.youtubePlayer}>
-          <Text style={styles.videoTitle}>
-            Jim Gale Galt's Landing - Food, water and energy self-reliance,
-            Lakefront, Luxury!
-          </Text>
-          <YoutubePlayer
-            height={220}
-            play={playing}
-            videoId={'ST2Vac0P14c'}
-            onChangeState={onStateChange}
-            webViewStyle={styles.youtubeOpacity}
-          />
-        </View>
-        <View style={styles.youtubePlayer}>
-          <Text style={styles.videoTitle}>
-            "This FREEDOM Revolution Is Unstoppable" by INSPIRED
-          </Text>
-          <YoutubePlayer
-            height={220}
-            play={playing}
-            videoId={'z87sBzZ-hkc'}
-            onChangeState={onStateChange}
-            webViewStyle={styles.youtubeOpacity}
-          />
-        </View>
+        <Text style={styles.growingContent}>
+          including resorts in Thailand, large farms in Africa, and
+          single-family residences from Poland to Mexico and all around the
+          United States. Our professional food forest designers can design in
+          any location around the world.
+        </Text>
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  videoTitle: {
-    fontFamily: 'Outfit-SemiBold',
-    fontSize: 15,
-    color: '#212121',
-    // marginHorizontal: 15,
-    // marginTop: 50,
-  },
   container: {
     backgroundColor: '#fff',
     flex: 1,
   },
   contentContainer: {
     marginTop: 8,
-    marginBottom: 80,
   },
   heading: {
     fontFamily: 'Outfit-SemiBold',
@@ -345,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   youtubePlayer: {
-    marginTop: 15,
+    marginTop: 10,
     marginHorizontal: 15,
   },
   youtubeOpacity: {

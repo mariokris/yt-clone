@@ -6,6 +6,7 @@ import {
   View,
   VirtualizedList,
   Pressable,
+  ScrollView,
 } from 'react-native';
 
 import HomeData from '../Utils/HomeData.json';
@@ -88,112 +89,44 @@ const HomeScreen = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <VirtualizedList
-        data={HomeData}
-        getItemCount={() => HomeData.length}
-        getItem={(data, index) => data[index]}
-        contentContainerStyle={styles.contentContainer}
-        renderItem={Comp}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      <Modal
-        isVisible={optionModal}
-        style={styles.modal}
-        onBackdropPress={() => setOptionModal(!optionModal)}
-        onBackButtonClick={() => setOptionModal(!optionModal)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalLine} />
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalHeading}>Options</Text>
-            <Pressable onPress={() => setOptionModal(!optionModal)}>
-              <Icon name="close-outline" color="#282828" size={26} />
-            </Pressable>
-          </View>
-          <Pressable style={styles.button}>
-            <Icon name="time-outline" color="#282828" size={24} />
-            <Text style={styles.buttonText}>Save to Watch later</Text>
-          </Pressable>
-          <Pressable style={styles.button}>
-            <Icon name="flag-outline" color="#282828" size={24} />
-            <Text style={styles.buttonText}>Report</Text>
-          </Pressable>
-        </View>
-      </Modal>
-      <BottomModal
-        isVisible={profileModal}
-        dismiss={() => setProfileModal(false)}>
-        <View style={styles.optionContainer}>
-          <Option
-            title="Settings"
-            icon="settings-outline"
-            onPress={() => navScreen('Settings')}
-          />
-          <Option
-            title="Watch later"
-            icon="time-outline"
-            onPress={() =>
-              navScreen('VideosScreen', {
-                screenName: 'Watch Later',
-                listId: 1,
-              })
-            }
-          />
-          <Option
-            title="History"
-            icon="refresh-outline"
-            onPress={() =>
-              navScreen('VideosScreen', {
-                screenName: 'History',
-                listId: 2,
-              })
-            }
-          />
-          <Option
-            title="Help & feedback"
-            icon="help-circle-outline"
-            onPress={() => navScreen('Help')}
-          />
-          <Option
-            title="Privacy policy"
-            icon="shield-checkmark-outline"
-            onPress={() => navScreen('PrivacyPolicy')}
-          />
-          <Option
-            title="Terms & Conditions"
-            icon="reader-outline"
-            onPress={() => navScreen('Terms')}
-          />
-          <Option
-            title="About US HTML"
-            icon="information-circle-outline"
-            onPress={() => navScreen('AboutUs')}
-          />
-          <Option
-            title="About us RN"
-            icon="information-circle-outline"
-            onPress={() => navScreen('AboutComp')}
-          />
-          <Option
-            title="Login"
-            icon="log-in-outline"
-            onPress={() => navScreen('Login')}
-          />
-          <Option title="Logout" icon="log-out-outline" />
-        </View>
-      </BottomModal>
-      <View style={styles.margin} />
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.contentContainer}>
+        <Image
+          source={require('../../assets/map.png')}
+          style={styles.wallWripple}
+          resizeMode="center"
+        />
+        <Text style={styles.growingContent}>
+          {
+            "Corporate agriculture is maximizing profits at the expense of our health. Monsanto’s herbicide glyphosate is a highly toxic poison. It has caused cancer for millions of Americans. \n\n Peer-reviewed studies link this poison to many other diseases including autism, Alzheimer’s, dementia, Celiac’s, gluten intolerance, diabetes, obesity, autoimmune diseases, and cancers. Many of these disease incidence rates have increased tenfold in the past 25 years with a 99% correlation with the increased use of glyphosate. \n\n The FDA has trouble finding any food that does not have glyphosate. Even low concentrations are toxic. We are far from the responsible guidelines the relevant precautionary principle suggests. \n\n Monsanto’s poison disproportionately affects the poor and children, because it is highly concentrated in processed foods and children’s kidneys aren’t fully developed for filtering toxins. What's more important than the health of us and our loved ones? The stakes could hardly be higher. Let's do better."
+          }
+        </Text>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
   },
   contentContainer: {
-    flexGrow: 1,
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  wallWripple: {
+    width: '100%',
+    height: 150,
+  },
+  growingContent: {
+    marginTop: 20,
+    fontFamily: 'Outfit-Regular',
+    color: '#595959',
+    fontSize: 17,
+    fontWeight: '300',
+    textAlign: 'left',
+    marginBottom: 100,
   },
   channelAvtar: {
     width: 28,
